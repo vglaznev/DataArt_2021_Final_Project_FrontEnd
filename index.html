@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Главная</title>
+		<title>News Portal</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link href="style.css" rel="stylesheet" />
 	</head>
@@ -10,8 +10,8 @@
 			<div class="logo">News Portal</div>
 			<div class="menu">
 				<ul>
-					<li><a href="/news-portal-frontend/index.html">Main page</a></li>
-					<li><a href="/news-portal-frontend/download.html">Upload article</a></li>
+					<li><a href="/index.html">Main page</a></li>
+					<li><a href="/download.html">Upload article</a></li>
 					<li>
 						<select name="topic">
 							<option value="">Choose topic</option>
@@ -90,8 +90,9 @@
 							'<div class="time">'+"Time:"+arItem["uploadTime"]+'</div>'+
 							'<div class="topic">'+"Topic:"+arItem["topic"]+'</div>'+
 							'<div class="text">'+arItem["body"].substring(0,40)+'</div>'+
-							'<div class="link"><a href="/news-portal-frontend/article.html?id='+arItem["id"]+'">Читать дальше</a></div>'+
-						'</div>';
+								'<div class="text">'+arItem["body"].substring(0,150)+"..."+'</div>'+
+								'<div class="link"><a href="/article.html?id='+arItem["id"]+'">Read more</a></div>'+
+								'</div>';
 					}
 					
 					var pages='';
