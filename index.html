@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Главная</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link href="style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="logo">News Portal</div>
+			<div class="menu">
+				<ul>
+					<li><a href="/news-portal-frontend/index.html">Main page</a></li>
+					<li><a href="/news-portal-frontend/download.html">Upload article</a></li>
+					<li>
+						<select name="topic">
+							<option value="">Choose topic</option>
+							<option value="Politics">Politics</option>
+							<option value="World">World</option>
+							<option value="Society">Society</option>
+							<option value="Finance">Finance</option>
+							<option value="Sports">Sports</option>
+							<option value="Science">Science</option>
+							<option value="Journeys">Journeys</option>
+						</select>
+					</li>
+				</ul>			
+			</div>
+		</div>
+		<div class="content"></div>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+		
+			$("body").on("change", "select[name=topic]", function(){
+				updateList();
+				return false;
+			});
+		
+			$("body").on("click", ".list .pages a", function(){
+				updateList($(this).attr("data-page"));
+				return false;
+			});
+			
+			$("body").on("keyup", ".pages input[name=size]", function(){
+				var size=parseInt($(this).val());
+				if(!size) size=5;
+				$(this).val(size);
+				updateList();
+				return false;
+			});
+			
+			updateList();
+		});
+		
+		function updateList(page=0, size="", topic="")
+		{
+			if(!size){
+				if($(".pages input[name=size]").length){
+					size=parseInt($(".pages input[name=size]").val());
+				}else{
+					size=5;
+				}
+			}
+			
+			if(!topic){
+				topic=$("select[name=topic]").val();
+			}
+
+			var arParams={};
+			
+			arParams["page"]=page;
+			arParams["size"]=size;
+			arParams["topic"]=topic;
+		
+			$.get("http://localhost:8080/articles/", arParams, function(arData){
+
+				$(".content").empty();
+
+				if(!$.isEmptyObject(arData["listOfArticles"])){
+				
+					var list='';	
+					
+					for(key in arData["listOfArticles"]){
+						var arItem={};
+						var arItem=arData["listOfArticles"][key];
+					
+						list+='<div class="item">'+
+							'<div class="title">'+arItem["title"]+'</div>'+
+							'<div class="time">'+"Time:"+arItem["uploadTime"]+'</div>'+
+							'<div class="topic">'+"Topic:"+arItem["topic"]+'</div>'+
+							'<div class="text">'+arItem["body"].substring(0,40)+'</div>'+
+							'<div class="link"><a href="/news-portal-frontend/article.html?id='+arItem["id"]+'">Читать дальше</a></div>'+
+						'</div>';
+					}
+					
+					var pages='';
+
+					pages+='<div class="pages">';
+					pages+='<div class="inp"><input type="text" name="size" value="'+size+'" /></div>';
+					if(arData["totalNumberOfPages"] > 1){
+						pages+='<div class="nav">';
+						if(arData["hasPrevious"]){
+							pages+='<a data-page="0" href="#">«</a>';
+							pages+='<a data-page="'+(arData["numberOfCurrentPage"]-1)+'" href="#">‹</a>';
+						}
+
+						pages+='<span>'+(arData["numberOfCurrentPage"]+1)+'</span>';
+
+						if(arData["hasNext"]){
+							pages+='<a data-page="'+(arData["numberOfCurrentPage"]+1)+'" href="#">›</a>';
+							pages+='<a data-page="'+(arData["totalNumberOfPages"]-1)+'" href="#">»</a>';
+						}
+						pages+='</div>';
+					}
+					pages+='</div>';
+
+
+					$(".content").empty().append('<div class="list">'+list+pages+'</div>');
+				}else{
+					$(".content").empty().append('<div class="list">There are no articles on this topic yet.</div>');
+				}
+			
+			}, "json");
+		}
+		</script>
+	</body>
+</html> 
