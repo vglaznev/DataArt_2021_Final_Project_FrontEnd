@@ -84,12 +84,10 @@
 					for(key in arData["listOfArticles"]){
 						var arItem={};
 						var arItem=arData["listOfArticles"][key];
-					
 						list+='<div class="item">'+
 							'<div class="title">'+arItem["title"]+'</div>'+
-							'<div class="time">'+"Time:"+arItem["uploadTime"]+'</div>'+
-							'<div class="topic">'+"Topic:"+arItem["topic"]+'</div>'+
-							'<div class="text">'+arItem["body"].substring(0,40)+'</div>'+
+							'<div class="time">'+"Time: "+arItem["uploadTime"].slice(0,16).replace('T', ' ')+'</div>'+
+							'<div class="topic">'+"Topic: "+arItem["topic"]+'</div>'+
 								'<div class="text">'+arItem["body"].substring(0,150)+"..."+'</div>'+
 								'<div class="link"><a href="/article.html?id='+arItem["id"]+'">Read more</a></div>'+
 								'</div>';
