@@ -31,8 +31,7 @@
 				if(!$.isEmptyObject(arItem)){
 
 					var item='<div class="title">'+arItem["title"]+'</div>'+
-							'<div class="time">'+arItem["uploadTime"].slice(0,16).replace('T', ' ')+'</div>'+
-							'<div class="topic">'+arItem["topic"]+'</div>'+
+							'<div class="timetopic">'+"Topic: "+arItem["topic"]+"&nbsp; Time: "+arItem["uploadTime"].slice(0,16).replace('T', ' ')+'</div>'+
 							'<div class="text">'+arItem["body"]+'</div>';
 
 					$(".content").empty().append('<div class="detail">'+item+'</div>');
